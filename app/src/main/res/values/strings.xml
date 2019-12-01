@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SeventhApplication</string>
+    <string name="top_text">TOP PAGE</string>
+    <string name="dinner_text">ディナー</string>
+    <string name="lunch_text">ランチ</string>
+    <string name="lunch01_text">エビフライと牛ロースステーキ</string>
+    <string name="lunch02_text">鶏の赤ワイン煮</string>
+    <string name="dinner01">海の幸コース</string>
+    <string name="dinner_02">牛フィレ肉のセット</string>
+    <string name="sms_text">SMSで予約する</string>
+    <string name="mail_text">メールで予約する</string>
+    <string name="share_text">共有する</string>
+    <string name="browse_text">ウェブサイトを開く</string>
+    <string name="shibuya">渋谷</string>
+    <string name="meijijingu">明治神宮</string>
+    <string name="yoyogi">代々木公園</string>
+    <string name="camera_text">写真を撮る</string>
+</resources>
