@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        // permission is not granted
+        // if permission is not granted
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -115,24 +115,18 @@ class MainActivity : AppCompatActivity() {
             != PackageManager.PERMISSION_GRANTED
         ) {
             // ask for permission (permission is not granted yet)
+            // return true if the user previously denied the request
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
                     Manifest.permission.CAMERA
                 )
             ) {
-                AlertDialog.Builder(this)
-                    .setMessage("SeventhApplication would like to access the camera")
-                    .setPositiveButton("OK") { _, which ->
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.CAMERA),
-                            REQUEST_CODE
-                        )
-                    }
-                    .setNegativeButton("Don't Allow") { dialog, which ->
-                        dialog
-                    }
-                    .show()
+                // show dialog to ask for permission
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_CODE
+                )
             } else {
                 ActivityCompat.requestPermissions(
                     this,
@@ -141,6 +135,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         } else {
+            // Permission has already been granted
             onCameraSelected()
         }
     }
@@ -156,11 +151,11 @@ class MainActivity : AppCompatActivity() {
                     onCameraSelected()
                 } else {
                     // permission denied
-                    requestPermission()
+                    return
                 }
                 onCameraSelected()
             }
-            // 別のアプリからのリクエストコード受け取ったとき
+            // received incorrect request code
             else -> {
                 return
             }
