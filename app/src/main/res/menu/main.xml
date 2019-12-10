@@ -3,18 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/top"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/top_text"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/shibuya"
         android:title="@string/shibuya"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/meijijingu"
-        android:title="@string/meijijingu" />
-    <item
-        android:id="@+id/yoyogi"
-        android:title="@string/yoyogi" />
+        app:showAsAction="never" >
+        <menu >
+            <item
+                android:id="@+id/meijijingu"
+                android:title="@string/meijijingu" />
+            <item
+                android:id="@+id/yoyogi"
+                android:title="@string/yoyogi"/>
+        </menu>
+    </item>
 </menu>

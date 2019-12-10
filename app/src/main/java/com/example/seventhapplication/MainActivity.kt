@@ -1,7 +1,9 @@
 package com.example.seventhapplication
 
+import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -9,9 +11,14 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private val REQUEST_CODE: Int = 1218
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +69,7 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.camera -> {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
+                checkPermission()
             }
             R.id.share -> {
                 val text = "共有する！"
@@ -80,5 +84,86 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onContextItemSelected(item)
+    }
+
+
+    private fun onCameraSelected() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            onCameraSelected()
+        } else {
+            requestPermission()
+        }
+    }
+
+    private fun requestPermission() {
+        // permission is not granted
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // ask for permission (permission is not granted yet)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.CAMERA
+                )
+            ) {
+                AlertDialog.Builder(this)
+                    .setMessage("SeventhApplication would like to access the camera")
+                    .setPositiveButton("OK") { _, which ->
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.CAMERA),
+                            REQUEST_CODE
+                        )
+                    }
+                    .setNegativeButton("Don't Allow") { dialog, which ->
+                        dialog
+                    }
+                    .show()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_CODE
+                )
+            }
+        } else {
+            onCameraSelected()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+            // If request is cancelled, the result arrays are empty.
+            REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    onCameraSelected()
+                } else {
+                    // permission denied
+                    requestPermission()
+                }
+                onCameraSelected()
+            }
+            // 別のアプリからのリクエストコード受け取ったとき
+            else -> {
+                return
+            }
+        }
     }
 }
