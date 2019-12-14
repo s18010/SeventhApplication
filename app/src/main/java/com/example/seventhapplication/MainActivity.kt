@@ -1,7 +1,6 @@
 package com.example.seventhapplication
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -86,8 +84,7 @@ class MainActivity : AppCompatActivity() {
         return super.onContextItemSelected(item)
     }
 
-
-    private fun onCameraSelected() {
+    private fun onCameraContextSelected() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
@@ -100,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            onCameraSelected()
+            onCameraContextSelected()
         } else {
             requestPermission()
         }
@@ -136,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             // Permission has already been granted
-            onCameraSelected()
+            onCameraContextSelected()
         }
     }
 
@@ -148,12 +145,12 @@ class MainActivity : AppCompatActivity() {
             // If request is cancelled, the result arrays are empty.
             REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    onCameraSelected()
+                    onCameraContextSelected()
                 } else {
                     // permission denied
                     return
                 }
-                onCameraSelected()
+                onCameraContextSelected()
             }
             // received incorrect request code
             else -> {
